@@ -80,7 +80,7 @@ interface SearchData {
 }
 
 function Landing() {
-  const dadosInicias: WeatherData = {
+  const initialData: WeatherData = {
     coord: {
       lon: 0,
       lat: 0
@@ -113,7 +113,7 @@ function Landing() {
   }
 
   const [city, setCity] = useState<string>()
-  const [data, setData] = useState<WeatherData>(dadosInicias)
+  const [data, setData] = useState<WeatherData>(initialData)
   const [results, setResults] = useState<SearchData>()
   const [valid, setValid] = useState(true)
 
@@ -199,69 +199,69 @@ function Landing() {
   const images = paths.map( path => icons ( path ) )
 
   let icon = initialIcon
-
+  
   switch (data?.weather[0].icon) {
     case '01d':
-      icon = images[0].default
+      icon = images[0]
       break
 
     case '01n':
-      icon = images[1].default
+      icon = images[1]
       break
 
     case '02d':
-      icon = images[2].default
+      icon = images[2]
       break
 
     case '02n':
-      icon = images[3].default
+      icon = images[3]
       break
 
     case '03d' || '03n' || '04d' || '04n':
-      icon = images[4].default
+      icon = images[4]
       break
 
     case '09d':
-      icon = images[5].default
+      icon = images[5]
       break
 
     case '09n':
-      icon = images[6].default
+      icon = images[6]
       break
 
     case '10d' || '10n':
-      icon = images[7].default
+      icon = images[7]
       break
 
     case '11d':
-      icon = images[8].default
+      icon = images[8]
       break
     
     case '11n':
-      icon = images[9].default
+      icon = images[9]
       break
 
     case '13d':
-      icon = images[10].default
+      icon = images[10]
       break
 
     case '13n':
-      icon = images[11].default
+      icon = images[11]
       break
 
     case '50d':
-      icon = images[12].default
+      icon = images[12]
       break
 
     case '50n':
-      icon = images[13].default
+      icon = images[13]
       break
   }
 
   async function handleCity(e: FormEvent) {
     e.preventDefault();
     
-    await api.get(`?q=${city}&appid=e81965343df414cbfb25d98c8741fe2a&lang=pt_br&units=metric`).then(response => {
+    await api.get(`?q=${city}&appid=95d72b0ce2bd65d51d6531c29ea2b154&units=metric`).then(response => {
       setData(response.data)
     }).catch(() => {setValid(false)})
     
@@ -271,7 +271,7 @@ function Landing() {
   }
 
   async function handleCityByCordinates (lat: number, lon: number) {
-    await api.get(`?lat=${lat}&lon=${lon}&appid=e81965343df414cbfb25d98c8741fe2a&lang=pt_br&units=metric`).then(response => {
+    await api.get(`?lat=${lat}&lon=${lon}&appid=95d72b0ce2bd65d51d6531c29ea2b154&units=metric`).then(response => {
       setValid(true)
       setData(response.data)
     })
@@ -280,7 +280,7 @@ function Landing() {
   async function handleChangeValue(value: string) {
     try {
       setCity(value)
-      const query = `?q=${value.trim()}&type=like&sort=population&cnt=30&appid=439d4b804bc8187953eb36d2a8c26a02&_=1604490628153`;
+      const query = `?q=${value.trim()}&type=like&sort=population&cnt=30&appid=95d72b0ce2bd65d51d6531c29ea2b154`;
 
       await search.get(query).then(response => {
         setResults(response.data)
@@ -313,11 +313,11 @@ function Landing() {
                 <div className="extras">
                   <div className="get-location" onClick={getLocation}>
                     <span className="get-location-button">
-                      Minha localização
+                      My location
                     </span>
                   </div>
                   {!valid && (
-                    <span className="snackbar">Cidade inválida</span>
+                    <span className="snackbar">invalid city</span>
                   )}
                 </div>
                 
@@ -359,7 +359,7 @@ function Landing() {
             <div className="result">
               <img
                 src={icon}
-                alt="Clima"
+                alt="Climate"
                 className="weather-icon"
               />
               <h1 className="temperature">
@@ -376,15 +376,15 @@ function Landing() {
 
             <div className="other-results">
               <div className="other">
-                Sensação térmica: <br/>
+                Thermal sensation: <br/>
                 <span>{data?.main.feels_like.toFixed(1)} ºC</span>
               </div>
               <div className="other">
-                Temp. Mínima: <br/>
+                Temp. Minimum: <br/>
                 <span>{data?.main.temp_min.toFixed(1)} ºC</span>
               </div>
               <div className="other">
-                Temperatura Máxima: <br/>
+                Maximum temperature: <br/>
                 <span>{data?.main.temp_max.toFixed(1)} ºC</span>
               </div>
             </div>
@@ -396,7 +396,7 @@ function Landing() {
                 <div className="icon-secondary-results humidity">
                   <RiDropFill />
                 </div>
-                <p>Umidade: <br/>
+                <p>Moisture: <br/>
                 {data?.main.humidity}%</p>
               </div>
               
@@ -404,7 +404,7 @@ function Landing() {
                 <div className="icon-secondary-results">
                   <WiStrongWind />
                 </div>
-                <p>Vento: <br/>
+                <p>Wind: <br/>
                 {data?.wind.speed.toFixed(1)} m/s</p>
               </div>
 
@@ -412,7 +412,7 @@ function Landing() {
                 <div className="icon-secondary-results">
                   <WiCloudy />
                 </div>
-                <p>Nuvens: <br/>
+                <p>Clouds: <br/>
                 {data?.clouds.all}%</p>
               </div>
 
@@ -427,7 +427,7 @@ function Landing() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Abrir no Google Maps
+                  Open in Google Maps
                 </a>
               </div>)
             }
